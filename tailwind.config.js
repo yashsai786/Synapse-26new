@@ -9,6 +9,9 @@ module.exports = {
         ring: 'var(--ring)',
         // Add other custom colors as needed
       },
+      fontFamily: {
+        card: ['CardCharacters', 'sans-serif'],
+      },
     },
   },
   // ...other config...

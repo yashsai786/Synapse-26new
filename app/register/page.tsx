@@ -12,7 +12,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex">
       {/* Left Side - Image */}
       <div className="hidden lg:flex lg:w-1/2 relative">
-        <Image src="/public/globe.svg" alt="Joker Cards Background" fill className="object-cover" priority />
+        <Image src="/pexels-yesimcolak-27515529.jpg" alt="Joker Cards Background" fill className="object-cover" priority />
         {/* Dice Logo Overlay */}
         <div className="absolute top-8 left-8">
           <svg
@@ -35,110 +35,134 @@ export default function RegisterPage() {
 
       {/* Right Side - Registration Form */}
       <div className="w-full lg:w-1/2 bg-black flex items-center justify-center p-8">
-        <div className="w-full max-w-md space-y-8">
+        <div className="w-full max-w-[582px] space-y-8">
           {/* Header */}
           <div className="text-center space-y-2">
             <h1
-              className="text-4xl md:text-5xl font-bold text-white tracking-wider"
-              style={{ fontFamily: "monospace" }}
+              className="text-3xl md:text-4xl font-bold text-white tracking-wider font-card"
             >
               THE CARDS ARE DEALT
-            </h1>
-            <h2
-              className="text-3xl md:text-4xl font-bold text-white tracking-wider"
-              style={{ fontFamily: "monospace" }}
-            >
+            <br></br>
               JOIN IN
-            </h2>
+              </h1>
           </div>
 
           {/* Registration Form */}
-          <div className="space-y-4 border border-white/20 p-8 rounded-lg">
+          <div className="space-y-4 border border-white/80 p-8 rounded-lg">
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text"
                 placeholder="E.g. Aditya"
-                className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+                className="w-full px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 font-card    "
               />
               <input
                 type="text"
                 placeholder="E.g. Sharma"
-                className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+                className="w-full px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 font-card"
               />
             </div>
 
             {/* Phone Number */}
             <div className="flex gap-2">
-              <select className="w-32 px-3 py-3 bg-transparent border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white/50">
-                <option value="91" className="bg-black">
+              <select className="w-32 px-3 py-3 bg-transparent border border-white rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white/50">
+                <option value="91" className="bg-black font-card">
                   INR(+91)
                 </option>
-                <option value="1" className="bg-black">
+                <option value="1" className="bg-black font-card">
                   USA(+1)
                 </option>
-                <option value="44" className="bg-black">
+                <option value="44" className="bg-black font-card">
                   UK(+44)
                 </option>
               </select>
               <input
                 type="tel"
                 placeholder="12345 67890"
-                className="flex-1 px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+                className="flex-1 px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
               />
             </div>
 
-            {/* Date of Birth and Gender */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="DOB: DD/MM/YYYY"
-                  className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 pr-10"
-                />
-                <svg
-                  className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-              </div>
-              <select className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-white/50">
-                <option value="" className="bg-black">
-                  Gender
-                </option>
-                <option value="male" className="bg-black">
-                  Male
-                </option>
-                <option value="female" className="bg-black">
-                  Female
-                </option>
-                <option value="other" className="bg-black">
-                  Other
-                </option>
-                <option value="prefer-not-to-say" className="bg-black">
-                  Prefer not to say
-                </option>
-              </select>
-            </div>
+          {/* Date of Birth and Gender */}
+<div className="grid grid-cols-2 gap-4">
 
+  {/* DOB */}
+  <div className="relative">
+    {/* Fake placeholder */}
+    <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 flex gap-1 text-sm">
+      <span className="text-white">DOB:</span>
+      <span className="text-gray-500">DD/MM/YYYY</span>
+    </div>
+
+    <input
+      type="text"
+      className="w-full h-[46px] px-4 bg-transparent border border-white
+      rounded-md text-white focus:outline-none focus:ring-2
+      focus:ring-white/40 pr-10"
+    />
+
+    {/* Calendar Icon */}
+    <svg
+      className="absolute right-4 top-1/2 -translate-y-1/2 h-6 w-6 text-white"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  </div>
+
+  {/* Gender */}
+  <div className="relative">
+    <select
+      defaultValue=""
+      className="w-full h-[46px] px-4 bg-transparent border border-white
+      rounded-md  appearance-none text-gray-500
+      focus:outline-none focus:ring-2 focus:ring-white/40 font-card text-sm"
+    >
+      <option value="" disabled className="bg-black text-gray-500">
+        Gender
+      </option>
+      <option value="male" className="bg-black">Male</option>
+      <option value="female" className="bg-black">Female</option>
+      <option value="other" className="bg-black">Other</option>
+      <option value="prefer-not-to-say" className="bg-black">
+        Prefer not to say
+      </option>
+    </select>
+
+    {/* Dropdown Arrow */}
+    <svg
+      className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2
+      h-4 w-4 text-white/50"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </div>
+
+</div>
+
+            
             {/* College Name */}
             <input
               type="text"
               placeholder="E.g. College name like ITB, DAICT, Nirma university"
-              className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="w-full px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 font-card"
             />
 
             {/* Email */}
             <input
               type="email"
               placeholder="E.g. rsharma@gmail.com"
-              className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
+              className="w-full px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50"
             />
 
             {/* Password */}
@@ -146,7 +170,7 @@ export default function RegisterPage() {
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 pr-10"
+                className="w-full px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 pr-10"
               />
               <button
                 type="button"
@@ -186,7 +210,7 @@ export default function RegisterPage() {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 placeholder="Confirm Password"
-                className="w-full px-4 py-3 bg-transparent border border-white/30 rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 pr-10"
+                className="w-full px-4 py-3 bg-transparent border border-white rounded-md text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-white/50 pr-10"
               />
               <button
                 type="button"
