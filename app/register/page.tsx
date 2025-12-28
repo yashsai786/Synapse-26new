@@ -16,12 +16,12 @@ export default function RegisterPage() {
     <div className="min-h-screen flex bg-black">
       {/* Left Side - Image */}
       <div className="hidden lg:flex lg:w-1/2 relative">
-        <Image 
-          src="/joker.jpg" 
-          alt="Joker Cards Background" 
-          fill 
-          className="object-cover" 
-          priority 
+        <Image
+          src="/joker.jpg"
+          alt="Joker Cards Background"
+          fill
+          className="object-cover"
+          priority
         />
         {/* Synapse Logo Overlay */}
         <div className="absolute top-8 left-8 z-10">
@@ -198,14 +198,14 @@ export default function RegisterPage() {
                 className="w-full bg-white text-black hover:bg-gray-100 font-semibold text-lg h-12 rounded-md transition-colors mt-6"
                 size="lg"
               >
-                Get OTP
+                Verify & Continue →
               </Button>
 
               {/* Login Link */}
               <p className="text-center text-white/80 text-sm mt-6 font-card">
                 Already have an account?{" "}
-                <Link 
-                  href="/login" 
+                <Link
+                  href="/login"
                   className="text-red-500 hover:text-red-400 font-semibold transition-colors"
                 >
                   Log In

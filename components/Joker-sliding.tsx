@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import Image from "next/image";
 
 interface JokerSlidingProps {
   className?: string;
@@ -20,201 +19,160 @@ export default function JokerSliding({
   const containerRef = useRef<HTMLDivElement>(null);
   const leftHalfRef = useRef<HTMLDivElement>(null);
   const rightHalfRef = useRef<HTMLDivElement>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const textRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!autoPlay) return;
+    if (!autoPlay || hasAnimated.current) return;
+    hasAnimated.current = true;
 
-    const ctx = gsap.context(() => {
-      // Initial state - both halves together (overlapping at center)
-      gsap.set([leftHalfRef.current, rightHalfRef.current], {
-        x: 0,
-        opacity: 0,
-        scale: 1.05,
-        force3D: true, // Enable GPU acceleration
-      });
+    // Fade in text
+    gsap.fromTo(
+      textRef.current,
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 0.6, ease: "power2.out", delay: delay + 0.3 }
+    );
 
-      // Initial fade-in animation with smooth ease
-      const initialFade = gsap.timeline({
-        defaults: { ease: "expo.out", force3D: true },
-      });
-      initialFade.to([leftHalfRef.current, rightHalfRef.current], {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-      });
+    // Split animation after delay
+    const splitTime = delay + 2;
 
-      // Main split animation timeline
-      const timeline = gsap.timeline({
-        delay: delay + 1.0,
-        defaults: { ease: "expo.inOut", force3D: true },
-        onComplete: () => {
-          setIsAnimating(false);
-          // Smooth fade out after split - slightly delayed for better visual flow
-          gsap.to(containerRef.current, {
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            force3D: true,
-            delay: 0.2,
-            onComplete: () => {
-              onComplete?.();
-            },
-          });
-        },
-      });
+    // Fade out text
+    gsap.to(textRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      delay: splitTime - 0.3,
+    });
 
-      // Break animation - split in half (separate outward) simultaneously with smooth easing
-      timeline
-        .to(
-          leftHalfRef.current,
-          {
-            x: "-50%",
-            duration: 1.8,
-            ease: "expo.inOut",
-          },
-          0
-        )
-        .to(
-          rightHalfRef.current,
-          {
-            x: "50%",
-            duration: 1.8,
-            ease: "expo.inOut",
-          },
-          0
-        );
-    }, containerRef);
+    // Slide left panel out
+    gsap.to(leftHalfRef.current, {
+      x: "-100%",
+      duration: 0.9,
+      ease: "power2.inOut",
+      delay: splitTime,
+    });
 
-    return () => ctx.revert();
+    // Slide right panel out
+    gsap.to(rightHalfRef.current, {
+      x: "100%",
+      duration: 0.9,
+      ease: "power2.inOut",
+      delay: splitTime,
+      onComplete: () => {
+        if (containerRef.current) {
+          containerRef.current.style.visibility = "hidden";
+        }
+        onComplete?.();
+      },
+    });
+
+    return () => {
+      gsap.killTweensOf([leftHalfRef.current, rightHalfRef.current, textRef.current]);
+    };
   }, [autoPlay, delay, onComplete]);
-
-  const triggerAnimation = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-
-    const ctx = gsap.context(() => {
-      // Initial fade-in with smooth easing
-      gsap.to([leftHalfRef.current, rightHalfRef.current], {
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "expo.out",
-        force3D: true,
-      });
-
-      // Main split animation timeline
-      const timeline = gsap.timeline({
-        delay: 1.0,
-        defaults: { ease: "expo.inOut", force3D: true },
-        onComplete: () => {
-          setIsAnimating(false);
-          // Smooth fade out after split - slightly delayed for better visual flow
-          gsap.to(containerRef.current, {
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            force3D: true,
-            delay: 0.2,
-            onComplete: () => {
-              onComplete?.();
-            },
-          });
-        },
-      });
-
-      timeline
-        .to(
-          leftHalfRef.current,
-          {
-            x: "-50%",
-            duration: 1.8,
-            ease: "expo.inOut",
-          },
-          0
-        )
-        .to(
-          rightHalfRef.current,
-          {
-            x: "50%",
-            duration: 1.8,
-            ease: "expo.inOut",
-          },
-          0
-        );
-    }, containerRef);
-
-    return () => ctx.revert();
-  };
 
   return (
     <div
       ref={containerRef}
-      className={`absolute inset-0 w-full h-full overflow-visible ${className}`}
-      style={{
-        opacity: 1,
-      }}
+      className={`fixed inset-0 z-[100] overflow-hidden ${className}`}
+      style={{ pointerEvents: "none" }}
     >
-      {/* Left Half - Background and Image */}
+      {/* Left Panel */}
       <div
         ref={leftHalfRef}
-        className="absolute top-0 bottom-0 origin-left overflow-hidden"
+        className="absolute top-0 left-0 w-1/2 h-full"
         style={{
-          width: "50%",
-          height: "100%",
-          left: 0,
-          opacity: 0,
+          background: "linear-gradient(135deg, #0a0a0a 0%, #111118 50%, #1a1a2e 100%)",
           willChange: "transform",
         }}
       >
-        {/* Black background that moves with the half */}
-        <div className="absolute inset-0 bg-black" />
-        <Image
-          src="/Joker-Slider.svg"
-          alt="Joker's Realm"
-          fill
-          className="object-cover relative z-10"
-          priority
+        <div
+          className="absolute top-1/3 right-0 w-64 h-64 rounded-full opacity-40"
           style={{
-            objectPosition: "left center",
+            background: "radial-gradient(circle, rgba(168,85,247,0.5) 0%, transparent 70%)",
+            filter: "blur(60px)",
           }}
         />
       </div>
 
-      {/* Right Half - Background and Image */}
+      {/* Right Panel */}
       <div
         ref={rightHalfRef}
-        className="absolute top-0 bottom-0 origin-right overflow-hidden"
+        className="absolute top-0 right-0 w-1/2 h-full"
         style={{
-          width: "50%",
-          height: "100%",
-          right: 0,
-          opacity: 0,
+          background: "linear-gradient(225deg, #0a0a0a 0%, #111118 50%, #1a1a2e 100%)",
           willChange: "transform",
         }}
       >
-        {/* Black background that moves with the half */}
-        <div className="absolute inset-0 bg-black" />
-        <Image
-          src="/Joker-Slider.svg"
-          alt="Joker's Realm"
-          fill
-          className="object-cover relative z-10"
-          priority
+        <div
+          className="absolute top-1/3 left-0 w-64 h-64 rounded-full opacity-40"
           style={{
-            objectPosition: "right center",
+            background: "radial-gradient(circle, rgba(236,72,153,0.4) 0%, transparent 70%)",
+            filter: "blur(60px)",
           }}
         />
       </div>
 
-      {/* Optional: Trigger button for manual control */}
-      {!autoPlay && (
-        <button
-          onClick={triggerAnimation}
-          className="absolute inset-0 z-10 w-full h-full bg-transparent cursor-pointer"
-          aria-label="Trigger animation"
-        />
-      )}
+      {/* Center Text - Split across separator */}
+      <div
+        ref={textRef}
+        className="absolute inset-0 flex items-center justify-center z-10"
+        style={{ opacity: 0 }}
+      >
+        <div className="flex items-center">
+          {/* Left word */}
+          <span
+            className="text-white text-right pr-4"
+            style={{
+              fontSize: "clamp(2rem, 8vw, 6rem)",
+              fontWeight: 900,
+              fontFamily: "var(--font-bebas), 'Bebas Neue', Impact, sans-serif",
+              letterSpacing: "0.04em",
+              textShadow: "0 0 40px rgba(168,85,247,0.4)",
+            }}
+          >
+            JOKER&apos;S
+          </span>
+          {/* Right word */}
+          <span
+            className="text-white text-left pl-4"
+            style={{
+              fontSize: "clamp(2rem, 8vw, 6rem)",
+              fontWeight: 900,
+              fontFamily: "var(--font-bebas), 'Bebas Neue', Impact, sans-serif",
+              letterSpacing: "0.04em",
+              textShadow: "0 0 40px rgba(236,72,153,0.4)",
+            }}
+          >
+            REALM
+          </span>
+        </div>
+      </div>
+
+      {/* Subtitle - Below the split text */}
+      <div
+        className="absolute inset-0 flex items-center justify-center z-10 pt-32"
+        style={{ opacity: 0 }}
+      >
+        <p
+          className="text-sm tracking-widest uppercase"
+          style={{
+            background: "linear-gradient(90deg, #a855f7, #ec4899, #ef4444)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Enter the Realm
+        </p>
+      </div>
+
+      {/* Center Line */}
+      <div
+        className="absolute top-0 bottom-0 left-1/2 w-px z-20"
+        style={{
+          background: "linear-gradient(180deg, transparent 20%, rgba(168,85,247,0.3) 50%, transparent 80%)",
+          transform: "translateX(-50%)",
+        }}
+      />
     </div>
   );
 }

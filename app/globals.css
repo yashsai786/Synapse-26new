@@ -75,7 +75,7 @@
 }
 
 @theme inline {
-  --font-sans: "Geist", "Geist Fallback";
+  --font-sans: "Inter", "Geist", "Geist Fallback", system-ui, sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback";
   --font-card: "CardCharacter", sans-serif;
   --color-background: var(--background);
@@ -123,9 +123,39 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  /* Added Roboto font import for forgotten password link */
-  @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
+
+/* Brand Color Palette */
+:root {
+  --brand-purple: #a855f7;
+  --brand-pink: #ec4899;
+  --brand-red: #ef4444;
+  --brand-yellow: #facc15;
+  --brand-charcoal: #1f1f1f;
+  --brand-gray: #374151;
+  --brand-gray-light: #6b7280;
+  
+  /* Gradient shortcuts */
+  --gradient-primary: linear-gradient(135deg, var(--brand-purple) 0%, var(--brand-pink) 50%, var(--brand-red) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--brand-yellow) 0%, #fbbf24 100%);
+}
+
+/* Smooth scroll for html - Lenis handles the rest */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 @font-face {

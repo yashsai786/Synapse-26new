@@ -74,6 +74,7 @@ export default function Footer() {
 
   return (
     <footer
+      id="contact"
       ref={sectionRef}
       className="relative w-full bg-black overflow-hidden"
     >
@@ -236,6 +237,7 @@ export default function Footer() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow us on Facebook"
                 className="text-white/70 hover:text-pink-400 transition-colors text-base md:text-lg font-semibold uppercase tracking-wider contact-item opacity-0"
               >
                 Facebook
@@ -244,6 +246,7 @@ export default function Footer() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Follow us on Instagram"
                 className="text-white/70 hover:text-pink-400 transition-colors text-base md:text-lg font-semibold uppercase tracking-wider contact-item opacity-0"
               >
                 Instagram
@@ -252,6 +255,7 @@ export default function Footer() {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Subscribe to our YouTube channel"
                 className="text-white/70 hover:text-pink-400 transition-colors text-base md:text-lg font-semibold uppercase tracking-wider contact-item opacity-0"
               >
                 YouTube
