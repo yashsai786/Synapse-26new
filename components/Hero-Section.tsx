@@ -71,8 +71,8 @@ export default function HeroSection() {
     });
     const PRELOAD_ASSETS = [
         // Hero visuals
-        "/RedHand.png",
-        "/redcard3.png",
+        "/RedHand2.jpeg",
+        "/redcard4.png",
         "/card_center.png",
 
         // About section
@@ -324,7 +324,7 @@ export default function HeroSection() {
             scrollTrigger: {
                 trigger: heroRef.current,
                 start: "top top",
-                end: "+=500%",
+                end: "+=300%",
                 scrub: 2.5,
                 pin: true,
                 pinSpacing: false,
@@ -347,20 +347,25 @@ export default function HeroSection() {
             .to("#redCard", {
                 rotation: 180,
                 scale: 0.5,
-                duration: 1,
+                duration: 2,
                 ease: "none"
-            })
+            }, 0)
+            .to(flipCardRef.current, {
+                rotationY: 90,
+                duration: 2,
+                ease: "none"
+            }, 0)
             .to(flipCardRef.current, {
                 rotationY: 180,
-                duration: 1,
+                duration: 2,
                 ease: "none"
-            },)
+            }, 2)
             .to("#part3_2", {
                 rotation: 360,
-                duration: 1.5,
+                duration: 2,
                 scale: 1,
                 ease: "none"
-            })
+            }, 2)
             .addLabel("part3Reveal")
             .set("#part3", { opacity: 1 }, "part3Reveal")
             .from(
@@ -400,8 +405,6 @@ export default function HeroSection() {
             .addLabel("part3Hide")
             .to(
                 [
-                    "#part3 nav .fa-bars",
-                    "#part3 #musicToggle",
                     "#part3 .register-btn"
                 ],
                 {
@@ -414,7 +417,6 @@ export default function HeroSection() {
             )
             .to(
                 [
-                    "#part3 nav .logo",
                     "#part3 .countdown .time-block"
                 ],
                 {
@@ -429,10 +431,12 @@ export default function HeroSection() {
                 "#part3 .title-wrapper",
                 { opacity: 0 },
                 "part3Hide+=0.15"
-            )
-            .to(".screen-container", { rotationZ: 185, duration: 1.5, scale: 0.25, ease: "none" })
-            .to(".screen-container", { rotationY: 180, duration: 1, ease: "none" })
-            .to(".screen-container", { rotationZ: 420, duration: 2, scale: 0.15, ease: "none" })
+            ).addLabel("together")
+            .to(".screen-container", { rotationZ: 185, duration: 1.5, scale: 0.25, ease: "none" }, "together")
+            .to(".screen-container", { rotationY: 90, duration: 1.5, ease: "none" }, "together")
+            .addLabel("together2")
+            .to(".screen-container", { rotationY: 180, duration: 1.5, ease: "none" }, "together2")
+            .to(".screen-container", { rotationZ: 420, duration: 2, scale: 0.15, ease: "none" }, "together2")
             .to(".screen-container", { duration: 2, ease: "none" });
 
     }, [scrambleTween]);
@@ -582,13 +586,13 @@ export default function HeroSection() {
                 </>
             )}
 
-            <audio
+            {/* <audio
                 ref={audioRef}
                 id="bgMusic"
                 src="/Synapse_Music.mp3"
                 loop
                 preload="auto"
-            />
+            /> */}
         </div>
     );
 

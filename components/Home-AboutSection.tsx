@@ -38,12 +38,12 @@ export default function AboutSection() {
                 if (!word.trim()) fragment.appendChild(document.createTextNode(word));
                 else {
                     const span = document.createElement('span');
-                    span.className = 'word inline-block';
+                    span.className = 'word inline-block whitespace-pre-wrap';
                     span.textContent = word;
                     fragment.appendChild(span);
                 }
             });
-
+            console.log(textNode);
             textNode.parentNode?.replaceChild(fragment, textNode);
         });
     }, []);
@@ -151,7 +151,7 @@ export default function AboutSection() {
             }}
         >
             <span className="doittitle mb-6 text-white text-[clamp(2.5rem,9vw,4rem)] font-joker tracking-wide">
-                About Synapse
+                about synapse
             </span>
 
             <div className="Theme max-w-full md:max-w-[60%]">

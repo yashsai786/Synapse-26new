@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <main className="relative min-h-screen bg-black overflow-hidden">
         {/* Main Content - Hidden during loading, visible after */}
-        <div 
+        <div
           className={`relative w-full transition-opacity duration-500`}
         >
           <HomeSection />
@@ -16,7 +16,7 @@ export default function Home() {
 
       {/* Just use this single section as Home Page 
       <HomeMainSection /> 
-      */}
+        */}
     </>
   );
 }
