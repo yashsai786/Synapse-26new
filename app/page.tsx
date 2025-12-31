@@ -1,9 +1,10 @@
+import Profile from "@/components/user-profile"
+import Timeline from "@/components/timeline"
 
-export default function Home() {
+export default function Page() {
   return (
-    <div>
-      <h1>Synapse' 26</h1>
-      <p>DA Ka Tyohaar</p>
-    </div>
-  );
+    <main>
+      <Profile />
+    </main>
+  )
 }
