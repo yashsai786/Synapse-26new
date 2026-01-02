@@ -52,7 +52,7 @@ export default function ArtistsSection() {
         if (!imagesContainerRef.current) return;
 
         const items = imagesContainerRef.current.querySelectorAll(".carousel-item");
-        const spacing = Math.min(window.innerWidth * 0.7, 600);
+        const spacing = window.innerWidth * 0.45;
 
         items.forEach((item, i) => {
             const element = item as HTMLElement;
@@ -97,7 +97,7 @@ export default function ArtistsSection() {
 
         carouselTimerRef.current = setInterval(() => {
             setCurrentIndex(prev => (prev + 1) % artists.length);
-        }, 5000);
+        }, 10000);
     }, [artists.length]);
 
     const resetCarouselTimer = useCallback(() => {
@@ -192,7 +192,7 @@ export default function ArtistsSection() {
             id="artistsSection"
             ref={artistSectionRef}
         >
-            <div className="artists-content relative top-0 h-screen flex flex-col">
+            <div className="artists-content relative top-0 h-full flex flex-col">
                 <svg
                     id="artistPath"
                     width="100%"
@@ -221,7 +221,7 @@ export default function ArtistsSection() {
                 </h1>
 
                 <div className="carousel relative flex-1 overflow-hidden flex items-center justify-center">
-                    <div className="black-line absolute left-0 right-0 top-1/2 h-1 bg-black -translate-y-1/2 z-0"></div>
+                    <div className="black-line absolute left-0 right-0 top-[45%] h-1 bg-black -translate-y-1/2 z-0"></div>
 
                     <div
                         id="artistPathDot"
@@ -250,45 +250,41 @@ export default function ArtistsSection() {
                                     className="block object-cover z-10 transition-transform duration-300 md:hover:scale-110"
                                     style={{
                                         width: i === currentIndex
-                                            ? 'clamp(240px, 42vw, 500px)'
-                                            : 'clamp(160px, 28vw, 350px)',
+                                            ? 'clamp(260px, 42vw, 520px)'
+                                            : 'clamp(110px, 18vw, 230px)',
                                         height: i === currentIndex
-                                            ? 'clamp(160px, 30vw, 350px)'
-                                            : 'clamp(110px, 20vw, 240px)'
+                                            ? 'clamp(200px, 30vw, 420px)'
+                                            : 'clamp(85px, 20vw, 230px)'
                                     }}
-                                    loading="lazy"
                                 />
+                                {i === currentIndex && (
+                                    <div className="mt-4 border-t-2 border-b-2 border-black py-2 px-6 bg-white text-center text-black">
+                                        <h2 className="text-2xl md:text-5xl font-bold uppercase">
+                                            {artist.name}
+                                        </h2>
+                                        <p className="text-sm md:text-lg">
+                                            {artist.date}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
 
-                    <div className="info absolute bottom-15 left-1/2 -translate-x-1/2 border-t-2 border-b-2 border-black py-2 md:py-4 bg-white text-center text-black z-11"
-                        style={{
-                            width: 'clamp(200px, 50vw, 500px)',
-                        }}
-                    >
-                        <h2 id="artistName" className="text-lg md:text-2xl font-bold uppercase">
-                            {artists[currentIndex].name}
-                        </h2>
-                        <p id="artistDate" className="text-xs md:text-sm">
-                            {artists[currentIndex].date}
-                        </p>
-                    </div>
-
                     <button
-                        className="absolute top-1/2 -translate-y-1/2
+                        className="absolute top-[45%] -translate-y-1/2
              w-15.5 h-13.5 bg-red-600
              flex items-center justify-center
-             hover:opacity-85 transition z-20 cursor-pointer"
+             hover:bg-black transition z-20 cursor-pointer"
                         onClick={prevArtist}
                         style={{
                             width: 'clamp(36px, 6vw, 62px)',
                             height: 'clamp(32px, 5vw, 54px)',
-                            left: 'calc(50% - clamp(120px, 27vw, 270px))'
+                            right: 'calc(50% + clamp(260px, 42vw, 520px)/2)'
                         }}
                     >
                         <div
-                            className="w-8.25 h-5.5 bg-black rotate-270"
+                            className="w-8.25 h-5.5 bg-black hover:bg-red-600 rotate-270"
                             style={{
                                 width: 'clamp(18px, 2.5vw, 33px)',
                                 height: 'clamp(12px, 1.8vw, 22px)',
@@ -298,19 +294,19 @@ export default function ArtistsSection() {
                     </button>
 
                     <button
-                        className="absolute top-1/2 -translate-y-1/2
-             w-15.5 h-13.5 bg-red-600
+                        className="absolute top-[45%] -translate-y-1/2
+              bg-red-600 hover:bg-black
              flex items-center justify-center
              hover:opacity-85 transition z-20 cursor-pointer"
                         onClick={nextArtist}
                         style={{
                             width: 'clamp(36px, 6vw, 62px)',
                             height: 'clamp(32px, 5vw, 54px)',
-                            right: 'calc(50% - clamp(120px, 27vw, 270px))'
+                            left: 'calc(clamp(260px, 42vw, 520px)/2 + 50%)'
                         }}
                     >
                         <div
-                            className="w-8.25 h-5.5 bg-black -rotate-270"
+                            className="w-8.25 h-5.5 bg-black hover:bg-red-600 -rotate-270"
                             style={{
                                 width: 'clamp(18px, 2.5vw, 33px)',
                                 height: 'clamp(12px, 1.8vw, 22px)',

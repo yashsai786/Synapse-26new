@@ -49,8 +49,8 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
     <div
       className="
     countdown absolute
-    bottom-[clamp(20px,4vw,32px)]
-    left-[clamp(12px,3vw,32px)]
+    bottom-[clamp(40px,7vw,55px)]
+    left-[clamp(20px,5vw,50px)]
     flex
     gap-[clamp(12px,4vw,36px)]
   "

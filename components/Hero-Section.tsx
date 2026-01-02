@@ -7,15 +7,15 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CountdownTimer } from './CountdownTimer';
 import {
     Navbar,
-    NavBody,
-    NavItems,
     MobileNav,
     MobileNavHeader,
     MobileNavMenu,
     MobileNavToggle,
     NavbarLogo,
     NavbarButton,
+    MobileAnimatedMenuItem
 } from "@/components/ui/Resizable-navbar";
+import Link from "next/link"
 import { Layout } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -24,8 +24,8 @@ gsap.registerPlugin(ScrollTrigger);
 const navItems = [
     { name: "Home", link: "/" },
     { name: "Events", link: "/events" },
-    { name: "Contact", link: "/contact" },
-    { name: "Terms And Conditions", link: "/termsandconditions" },
+    { name: "Contact Us", link: "#contact", isContact: true },
+    { name: "Terms And Conditions", link: "/terms-and-conditions" },
 ];
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -38,8 +38,6 @@ type HeroSectionProps = {
 };
 
 export default function HeroSection({ onEnter }: HeroSectionProps) {
-
-    const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [showEnter, setShowEnter] = useState(false);
     const [loadingProgress, setLoadingProgress] = useState(0);
@@ -47,6 +45,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
     const [part3Active, setPart3Active] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    const scrollHintRef = useRef<HTMLDivElement>(null);
     const svgContainerRef = useRef<HTMLDivElement>(null);
     const progressTextRef = useRef<HTMLDivElement>(null);
     const enterBtnRef = useRef<HTMLButtonElement>(null);
@@ -84,12 +83,25 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
         "/redcard4.png",
         "/card_center.png",
         "/Logo_Synapse.png",
+        "/Synapse_Music.mp3",
+        "/inkReveal2.gif",
 
         // About section
         "/Group_9.png",
 
     ];
+    const handleContactClick = (e: any) => {
+        e.preventDefault();
+        setMobileMenuOpen(false);
 
+        const footer = document.getElementById("contact");
+        if (!footer) return;
+
+        footer.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    };
 
     const updateProgressText = useCallback((progress: number) => {
         if (progressTextRef.current) {
@@ -311,20 +323,35 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
         ScrollTrigger.refresh(true);
     }, []);
+    useEffect(() => {
+        if (!scrollHintRef.current) return;
+
+        gsap.fromTo(
+            scrollHintRef.current,
+            { y: 0 },
+            {
+                y: 20,
+                duration: 1.4,
+                ease: "power1.inOut",
+                repeat: -1,
+                yoyo: true,
+                overwrite: false,
+                id: "scrollHintIdle",
+            }
+        );
+    }, []);
 
     useEffect(() => {
         lockScroll();
     }, [lockScroll]);
 
     const handleEnter = useCallback((): void => {
+        setIsLoading(false);
         if (enterBtnRef.current) {
             enterBtnRef.current.style.pointerEvents = "none";
             enterBtnRef.current.style.opacity = "0";
         }
 
-        audioRef.current?.play().catch(() => { });
-
-        setIsLoading(false);
         onEnter();
     }, []);
 
@@ -369,13 +396,21 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
             scale: 0.2,
             rotation: 180
         })
+        masterTL.to(scrollHintRef.current, {
+            opacity: 0,
+            ease: "none",
+            onStart: () => {
+                // stop idle animation once scroll begins
+                gsap.getById("scrollHintIdle")?.kill();
+            },
+        }, 0.05)
+
             .to("#redCard", {
                 rotation: 180,
                 scale: 0.5,
                 duration: 2,
                 ease: "none"
             }, 0)
-            // BORDER fades IN during flip
             .to(
                 frontScreenRef.current,
                 {
@@ -498,15 +533,64 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
     }, [scrambleTween]);
     const hasRunMaskRef = useRef(false);
-
     useEffect(() => {
+        if (isLoading) return;
+
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const id = requestAnimationFrame(() => {
+            audio.muted = false;
+            audio.volume = 0;
+            audio.play().catch(() => { });
+
+            gsap.to(audio, {
+                volume: 1,
+                duration: 1.2,
+                ease: "power2.out",
+            });
+        });
+
+        return () => cancelAnimationFrame(id);
+    }, [isLoading]);
+    useEffect(() => {
+        const unlockAudio = () => {
+            const audio = audioRef.current;
+            if (!audio) return;
+
+            audio.muted = true;
+            audio.volume = 0;
+
+            audio.play()
+                .then(() => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                })
+                .catch(() => { });
+
+            window.removeEventListener("pointerdown", unlockAudio);
+            window.removeEventListener("keydown", unlockAudio);
+        };
+
+        window.addEventListener("pointerdown", unlockAudio);
+        window.addEventListener("keydown", unlockAudio);
+
+        return () => {
+            window.removeEventListener("pointerdown", unlockAudio);
+            window.removeEventListener("keydown", unlockAudio);
+        };
+    }, []);
+
+    useLayoutEffect(() => {
         if (isLoading) return;
         if (!maskLayerRef.current) return;
         if (hasRunMaskRef.current) return;
 
+        hasRunMaskRef.current = true;
+
         gsap.to(maskLayerRef.current, {
             duration: 4,
-            ease: "power2.inOut",
+            ease: "none",
             webkitMaskSize: "cover",
             maskSize: "cover",
             onComplete: () => {
@@ -546,7 +630,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
             ) : (
                 <>
                     <Navbar visible={showNavbar}>
-                        <MobileNav visible={showNavbar}>
+                        <MobileNav>
                             <MobileNavHeader>
                                 <NavbarLogo />
                                 <MobileNavToggle
@@ -554,27 +638,25 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
                                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                                 />
                             </MobileNavHeader>
+
                             <MobileNavMenu
                                 isOpen={mobileMenuOpen}
                                 onClose={() => setMobileMenuOpen(false)}
                             >
                                 {navItems.map((item, idx) => (
-                                    <a
+                                    <MobileAnimatedMenuItem
                                         key={idx}
-                                        href={item.link}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="w-full text-white/80 hover:text-[#EB0000] transition-colors duration-200 py-2"
-                                    >
-                                        {item.name}
-                                    </a>
+                                        name={item.name}
+                                        link={item.link}
+                                        onClick={(e) => {
+                                            if (item.isContact) {
+                                                handleContactClick(e);
+                                            } else {
+                                                setMobileMenuOpen(false);
+                                            }
+                                        }}
+                                    />
                                 ))}
-                                <NavbarButton
-                                    href="/register"
-                                    variant="gradient"
-                                    className="w-full mt-4"
-                                >
-                                    Register
-                                </NavbarButton>
                             </MobileNavMenu>
                         </MobileNav>
                     </Navbar>
@@ -610,7 +692,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
                                 </div>
 
                                 <div id="part3" ref={part3Ref} className={`absolute inset-0 w-full h-screen transform-[rotateY(180deg)] backface-hidden ${part3Active ? "pointer-events-auto" : "pointer-events-none"}`}>
-                                    <div className="register-btn absolute bottom-[40px] right-[40px]">
+                                    <div className="register-btn absolute bottom-[50px] right-[50px]">
                                         <NavbarButton href="/register" variant="register">
                                             Register
                                         </NavbarButton>
@@ -623,6 +705,9 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
                                     <CountdownTimer targetDate={new Date("2026-02-26 00:00:00")} />
 
                                 </div>
+                            </div>
+                            <div className='absolute font-card flex flex-col z-100 h-[120px] w-[60px] text-xs text-center items-center justify-center gap-[5px] left-1/2 -translate-x-1/2 border-amber-50 bottom-[10px] border-solid border-1 rounded-full px-0.5' ref={scrollHintRef}>
+                                Scroll To Explore <br /><p className="text-3xl text-center">↓</p>
                             </div>
                         </div>
                     </div>

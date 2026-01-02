@@ -64,10 +64,6 @@ export default function HallOfFame() {
                 }}
             />
             <div className="relative min-h-screen bg-black px-[10%] py-20 md:px-[5%] overflow-hidden">
-                <div className="font-joker absolute top-[15%] left-1/2 -translate-x-1/2 -translate-y-1/2 text-[14vw] font-black text-white/9 select-none tracking-[20px] z-10">
-                    synapse
-                </div>
-
                 <div className="relative z-20">
                     <h1 className="text-6xl md:text-5.5xl font-black tracking-[15px] lowercase mb-2.5 bg-linear-to-br from-white to-white bg-clip-text text-transparent font-joker">
                         SYNAPSE
@@ -75,7 +71,7 @@ export default function HallOfFame() {
                     <h2 className="font-joker text-5xl md:text-6xl font-black lowercase mb-5 tracking-[5px] bg-linear-to-br from-white via-gray-400 to-gray-300 bg-clip-text text-transparent text-shadow-lg">
                         Hall of Fame
                     </h2>
-                    <p className="text-xl md:text-1.5xl text-gray-300 max-w-150 leading-relaxed mb-15">
+                    <p className="text-xl lg:text-right md:text-1.5xl text-gray-300 max-w-150 leading-relaxed mb-15 lg:ml-auto ">
                         The iconic moments from Synapse that left a mark on the fest,
                         captured and remembered as part of the Joker&apos;s Realm.
                     </p>

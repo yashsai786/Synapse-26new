@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const ContactFooter: React.FC = () => {
     return (
-        <footer className="relative w-full min-h-screen bg-black text-white font-sans overflow-hidden">
+        <footer id="contact" className="relative w-full h-full bg-black text-white font-sans overflow-hidden">
             <style jsx>{`
         @media (max-width: 968px) {
           html, body {
@@ -16,7 +16,7 @@ const ContactFooter: React.FC = () => {
       `}</style>
 
             <video
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full object-cover"
                 autoPlay
                 muted
                 loop
@@ -29,7 +29,7 @@ const ContactFooter: React.FC = () => {
 
             <div className="absolute inset-0 bg-black/20 z-10" aria-hidden="true" />
 
-            <div className="relative z-20 w-full min-h-screen flex flex-col">
+            <div className="relative z-20 w-full min-h-[cal(100vh - 40px)] flex flex-col">
                 <div className="w-full">
                     <Image
                         src="/subtract.svg"
@@ -41,7 +41,7 @@ const ContactFooter: React.FC = () => {
                     />
                 </div>
 
-                <div className="px-4 md:px-[10%] pt-6 pb-4 md:pt-5 md:pb-2.5 flex flex-col flex-1">
+                <div className="px-4 md:px-[20px] pt-6 pb-4 md:pt-5 md:pb-2.5 flex flex-col flex-1">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 md:mb-2.5">
                         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-0">Contact us</h1>
                         <Image
@@ -58,40 +58,32 @@ const ContactFooter: React.FC = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 items-start mb-8 md:mb-7 text-sm sm:text-base md:text-lg">
                         <div className="space-y-2 sm:space-y-3 leading-relaxed sm:leading-loose">
                             <div>
-                                <span className="font-semibold">Vivek Chaudhari:</span>
-                                <Link href="tel:+916354042414" className="ml-1 hover:text-indigo-300 transition-colors duration-200">
-                                    +91 6354 042 414
-                                </Link>
+                                <span className="font-semibold">Namra Sanandiya:</span>
+                                <Link href="tel:+918799048240" className="ml-1 hover:text-indigo-300 transition-colors duration-200">
+                                    +91 87990 48240
+                                </Link><br />
+                                <pre>(Public Relation Head)</pre>
                             </div>
                             <div>
-                                <span className="font-semibold">Harshall Dharmik:</span>
-                                <Link href="tel:+917600051765" className="ml-1 hover:text-indigo-300 transition-colors duration-200">
-                                    +91 7600 051 765
-                                </Link>
+                                <span className="font-semibold">Rujal Jiyani:</span>
+                                <Link href="tel:+919499549977" className="ml-1 hover:text-indigo-300 transition-colors duration-200">
+                                    +91 94995 49977
+                                </Link><br/>
+                                <pre>(Events Head)</pre>
                             </div>
-                            <div>
-                                <span className="font-semibold">Kushal Desai:</span>
-                                <Link href="tel:+919727055132" className="ml-1 hover:text-indigo-300 transition-colors duration-200">
-                                    +91 9727 055 132
-                                </Link>
-                            </div>
+
                         </div>
 
                         <div className="text-left lg:text-right lg:pl-6 xl:pl-10 space-y-2 sm:space-y-3 leading-relaxed sm:leading-loose">
-                            <div>DAIICT-campus, near, Reliance Cross Rd,</div>
-                            <div>Gandhinagar, Gujarat 382007</div>
-                            <div className="mt-4 md:mt-2.5 space-y-1">
+                            <div>DAU-campus (formerly DA-IICT), near, Reliance Cross Rd,</div>
+                            <div>Gandhinagar, Gujarat 382007, India</div>
+                            <div className="flex flex-row lg:justify-self-end gap-[10px] mt-4 md:mt-2.5 space-y-1">
+                                <span>Email:</span>
                                 <Link
                                     href="mailto:synapse.thefest@gmail.com"
                                     className="block hover:text-indigo-300 transition-colors duration-200"
                                 >
-                                    synapse.thefest@gmail.com
-                                </Link>
-                                <Link
-                                    href="mailto:synapse@daiict.ac.in"
-                                    className="block hover:text-indigo-300 transition-colors duration-200"
-                                >
-                                    synapse@daiict.ac.in
+                                    synapse.thefest@dau.ac.in
                                 </Link>
                             </div>
                         </div>
@@ -99,7 +91,7 @@ const ContactFooter: React.FC = () => {
 
                     <nav className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 mt-auto pb-6 sm:pb-4 md:pb-2.5">
                         <Link
-                            href="https://instagram.com"
+                            href="https://www.instagram.com/synapsedaiict?igsh=MXUwYzc5ZGE4N2NhZA=="
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-white no-underline text-sm sm:text-base md:text-lg font-bold tracking-widest hover:text-[#667eea] hover:-translate-y-0.5 transition-all duration-300 ease-in-out px-2 py-1"
@@ -107,7 +99,7 @@ const ContactFooter: React.FC = () => {
                             INSTAGRAM
                         </Link>
                         <Link
-                            href="https://youtube.com"
+                            href="http://www.youtube.com/@SynapseDAIICT"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-white no-underline text-sm sm:text-base md:text-lg font-bold tracking-widest hover:text-[#667eea] hover:-translate-y-0.5 transition-all duration-300 ease-in-out px-2 py-1"
