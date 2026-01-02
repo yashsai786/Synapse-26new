@@ -7,26 +7,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CountdownTimer } from './CountdownTimer';
 import {
     Navbar,
-    MobileNav,
-    MobileNavHeader,
-    MobileNavMenu,
-    MobileNavToggle,
-    NavbarLogo,
-    NavbarButton,
-    MobileAnimatedMenuItem
+    NavbarButton
 } from "@/components/ui/Resizable-navbar";
+import NavigationPanel from '@/components/ui/NavigationPanel';
 import Link from "next/link"
 import { Layout } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const navItems = [
-    { name: "Home", link: "/" },
-    { name: "Events", link: "/events" },
-    { name: "Contact Us", link: "#contact", isContact: true },
-    { name: "Terms And Conditions", link: "/terms-and-conditions" },
-];
 
 const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 const SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
@@ -43,7 +31,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
     const [loadingProgress, setLoadingProgress] = useState(0);
     const [showNavbar, setShowNavbar] = useState(false);
     const [part3Active, setPart3Active] = useState(false);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const scrollHintRef = useRef<HTMLDivElement>(null);
     const svgContainerRef = useRef<HTMLDivElement>(null);
@@ -90,18 +77,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
         "/Group_9.png",
 
     ];
-    const handleContactClick = (e: any) => {
-        e.preventDefault();
-        setMobileMenuOpen(false);
-
-        const footer = document.getElementById("contact");
-        if (!footer) return;
-
-        footer.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-        });
-    };
 
     const updateProgressText = useCallback((progress: number) => {
         if (progressTextRef.current) {
@@ -630,35 +605,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
             ) : (
                 <>
                     <Navbar visible={showNavbar}>
-                        <MobileNav>
-                            <MobileNavHeader>
-                                <NavbarLogo />
-                                <MobileNavToggle
-                                    isOpen={mobileMenuOpen}
-                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                                />
-                            </MobileNavHeader>
-
-                            <MobileNavMenu
-                                isOpen={mobileMenuOpen}
-                                onClose={() => setMobileMenuOpen(false)}
-                            >
-                                {navItems.map((item, idx) => (
-                                    <MobileAnimatedMenuItem
-                                        key={idx}
-                                        name={item.name}
-                                        link={item.link}
-                                        onClick={(e) => {
-                                            if (item.isContact) {
-                                                handleContactClick(e);
-                                            } else {
-                                                setMobileMenuOpen(false);
-                                            }
-                                        }}
-                                    />
-                                ))}
-                            </MobileNavMenu>
-                        </MobileNav>
+                        <NavigationPanel />
                     </Navbar>
 
                     <div className="hero relative inset-0 h-screen z-25" ref={heroRef}>

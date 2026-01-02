@@ -9,7 +9,6 @@ import ArtistsSection from "@/components/Artists";
 import HallOfFame from "@/components/Home-HallOfFame";
 import Footer from "@/components/ui/Footer";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SmoothScroller } from "@/components/ui/SmoothScroller";
 
 
 export default function HomeSection() {
@@ -25,7 +24,6 @@ export default function HomeSection() {
   }, [entered]);
 
   return (
-    <SmoothScroller>
       <main className="flex flex-col min-h-screen">
         <HeroSection onEnter={() => setEntered(true)} />
         <div
@@ -48,6 +46,5 @@ export default function HomeSection() {
           <Footer />
         </div>
       </main>
-    </SmoothScroller>
   );
 }
