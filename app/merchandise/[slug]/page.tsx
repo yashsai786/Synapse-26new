@@ -3,14 +3,16 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
+import { Navbar } from "@/components/ui/Resizable-navbar";
+import NavigationPanel from "@/components/ui/NavigationPanel";
+import Footer from "@/components/ui/Footer";
 
 const PRODUCTS = [
     {
         slug: "synapse-tee-1",
         name: "Synapse’26 Exclusive Tee",
         price: 500,
-        image: "/images/Rectangle 90.png",
+        image: "/images_merch/Rectangle 90.png",
         sizes: ["S", "M", "L", "XL", "2XL"],
         note: "* Merch should be collected from the help desk on the day of fest.",
         features: [
@@ -24,7 +26,7 @@ const PRODUCTS = [
         slug: "synapse-tee-2",
         name: "Synapse’26 Exclusive Hoodie",
         price: 500,
-        image: "/images/Rectangle 91.png",
+        image: "/images_merch/Rectangle 91.png",
         sizes: ["S", "M", "L", "XL", "2XL"],
         note: "* Merch should be collected from the help desk on the day of fest.",
         features: [
@@ -38,7 +40,7 @@ const PRODUCTS = [
         slug: "synapse-tee-3",
         name: "Synapse’26 Exclusive Cap",
         price: 500,
-        image: "/images/Rectangle 90-2.png",
+        image: "/images_merch/Rectangle 90-2.png",
         sizes: ["S", "M", "L", "XL",],
         note: "* Merch should be collected from the help desk on the day of fest.",
         features: [
@@ -52,7 +54,7 @@ const PRODUCTS = [
         slug: "synapse-tee-4",
         name: "Synapse’26 Exclusive Tee",
         price: 500,
-        image: "/images/Rectangle 91-2.png",
+        image: "/images_merch/Rectangle 91-2.png",
         sizes: ["S", "M", "L", "XL", "2XL"],
         note: "* Merch should be collected from the help desk on the day of fest.",
         features: [
@@ -77,17 +79,19 @@ export default function ProductPage() {
 
     return (
         <div className="w-full bg-black text-white min-h-screen pt-24">
-            <Navbar />
+            <Navbar visible={true}>
+                <NavigationPanel />
+            </Navbar>
 
             {/* BREADCRUMB */}
             <div className="text-sm px-6 mb-2 flex gap-1 items-center mt-4 gap-2">
-                <Link href="/" className="text-white/60 hover:text-red-500 transition-colors">Home</Link>
-                <span className="text-red-500">{">"}</span>
-                <Link href="/merchandise" className="text-white/60 hover:text-red-500 transition-colors">
+                <Link href="/" className="text-white/60 hover:text-red-500 transition-colors font-Inter">Home</Link>
+                <span className="text-red-500 font-Inter">{">"}</span>
+                <Link href="/merchandise" className="text-white/60 hover:text-red-500 transition-colors font-Inter">
                     Merchandise
                 </Link>
-                <span className="text-red-500">{">"}</span>
-                <span className="text-red-500 font-medium">{product.name}</span>
+                <span className="text-red-500 font-Inter">{">"}</span>
+                <span className="text-red-500 font-Inter">{product.name}</span>
             </div>
 
             {/* MAIN CONTENT */}
@@ -132,10 +136,10 @@ export default function ProductPage() {
                 {/* RIGHT DETAILS */}
                 <div className="md:w-1/2 space-y-6">
 
-                    {/* TITLE – JackassWild */}
+                    {/* TITLE */}
                     <h1
-                        className="text-3xl md:text-4xl leading-tight"
-                        style={{ fontFamily: "JackassWild" }}
+                        className="text-3xl md:text-4xl leading-tight font-jqka"
+
                     >
                         {product.name}
                     </h1>
@@ -171,18 +175,19 @@ export default function ProductPage() {
                         </button>
                     </div>
 
-                    {/* BUY BUTTON – JackassWild */}
+                    {/* BUY BUTTON */}
                     <button
                         className="
     mt-6
     w-full max-w-[280px]
     border border-white
     py-3 text-lg
+    font-jqka
     hover:bg-white hover:text-black
     transition
     mx-auto md:mx-0
   "
-                        style={{ fontFamily: "JackassWild" }}
+
                     >
                         Buy Now
                     </button>
@@ -199,10 +204,8 @@ export default function ProductPage() {
                 </div>
             </div>
 
-            {/* FOOTER */}
-            <div className="mt-16">
-                <img src="/images/footer.png" className="w-full" />
-            </div>
+            <Footer />
+
         </div>
     );
 }

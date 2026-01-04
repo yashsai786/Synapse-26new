@@ -13,8 +13,8 @@ export default function SponsorTier({
     // Grid configuration
     const gridCols =
         desktopCols === 2
-            ? "grid-cols-2 md:grid-cols-2 max-w-[400px]"
-            : "grid-cols-2 md:grid-cols-4 max-w-[800px]";
+            ? "grid-cols-2 md:grid-cols-2"
+            : "grid-cols-2 md:grid-cols-4";
 
     return (
         <section className="w-full flex flex-col items-center mt-14 md:mt-20 mb-10 px-4">
@@ -46,6 +46,9 @@ export default function SponsorTier({
                     gap-x-6 md:gap-x-14
                     gap-y-10 md:gap-y-14
                     justify-items-center
+                    w-full
+                    max-w-[800px]
+                    mx-auto
                 `}
             >
                 {sponsors.map((s, i) => (

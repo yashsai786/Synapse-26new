@@ -1,6 +1,6 @@
 import HeroSection from "@/components/HeroSection";
 import SponsorTier from "@/components/SponsorTier";
-import Footer from "@/components/Footer";
+import Footer from "@/components/ui/Footer";
 
 export default function SponsorsPage() {
     // Tier Data
