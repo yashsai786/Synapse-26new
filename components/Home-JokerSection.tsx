@@ -492,7 +492,7 @@ export default function JokerSection() {
                                             }}
                                         >
                                             <h2 className="text-black text-3xl font-bold">{card.day}</h2>
-                                            <h2 className={card.isRed ? 'text-[#cf0000] font-jakass text-4xl font-bold' : 'text-black text-4xl font-jakass font-bold'}>{card.name}</h2>
+                                            <h2 className={card.isRed ? 'text-[#cf0000] font-jqka text-4xl font-bold' : 'text-black text-4xl font-jqka font-bold'}>{card.name}</h2>
                                         </div>
                                     </div>
                                 </div>

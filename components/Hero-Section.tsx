@@ -619,10 +619,10 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
             {isLoading ? (
                 <>
-                    <div id="progress" ref={progressTextRef} className="fixed bottom-[5%] right-[2%] text-white text-[clamp(20px,5vw,40px)] tracking-[2px] z-11 transition-opacity duration-600">
+                    <div id="progress" ref={progressTextRef} className="fixed bottom-[5%] right-[2%] text-white text-[clamp(20px,5vw,40px)] tracking-[2px] z-11 transition-opacity duration-600 font-jqka">
                         Loading {loadingProgress}%
                     </div>
-                    <button id="enterBtn" ref={enterBtnRef} onClick={handleEnterClick} className={`fixed left-1/2 -translate-x-1/2 bottom-[10%] scale-90 px-[clamp(20px,5vw,40px)] py-[8px] text-[clamp(24px,5vw,40px)] text-white bg-transparent border-[3px] md:border-[5px] border-white rounded-[10px] cursor-pointer opacity-0 z-40 shadow-[5px_5px_0px_#ff0000] md:shadow-[10px_10px_0px_#ff0000] transition-all duration-200 font-['Roboto',sans-serif] pointer-events-auto hover:bg-[#EB0000] hover:text-black hover:border-black hover:shadow-[5px_5px_0px_#ffffff] md:hover:shadow-[10px_10px_0px_#ffffff] ${showEnter
+                    <button id="enterBtn" ref={enterBtnRef} onClick={handleEnterClick} className={`fixed left-1/2 -translate-x-1/2 bottom-[10%] scale-90 px-[clamp(20px,5vw,40px)] py-[8px] text-[clamp(24px,5vw,40px)] text-white bg-transparent border-[3px] md:border-[5px] border-white rounded-[10px] cursor-pointer opacity-0 z-40 shadow-[5px_5px_0px_#ff0000] md:shadow-[10px_10px_0px_#ff0000] transition-all duration-200 font-jqka pointer-events-auto hover:bg-[#EB0000] hover:text-black hover:border-black hover:shadow-[5px_5px_0px_#ffffff] md:hover:shadow-[10px_10px_0px_#ffffff] ${showEnter
                         ? "opacity-100 scale-100 pointer-events-auto"
                         : "opacity-0 scale-90 pointer-events-none"}`}>
                         Enter
@@ -679,7 +679,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
                                 </div>
                             </div>
-                            <div className='absolute font-card flex flex-col z-100 h-[120px] w-[60px] text-xs text-center items-center justify-center gap-[5px] left-1/2 -translate-x-1/2 border-amber-50 bottom-[10px] border-solid border-1 rounded-full px-0.5' ref={scrollHintRef}>
+                            <div className='absolute font-jqka flex flex-col z-100 h-[120px] w-[60px] text-xs text-center items-center justify-center gap-[5px] left-1/2 -translate-x-1/2 border-amber-50 bottom-[10px] border-solid border rounded-full px-0.5' ref={scrollHintRef}>
                                 Scroll To Explore <br /><p className="text-3xl text-center">↓</p>
                             </div>
                         </div>

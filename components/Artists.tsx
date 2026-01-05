@@ -259,10 +259,10 @@ export default function ArtistsSection() {
                                 />
                                 {i === currentIndex && (
                                     <div className="mt-4 border-t-2 border-b-2 border-black py-2 px-6 bg-white text-center text-black">
-                                        <h2 className="text-2xl md:text-5xl font-jakass uppercase">
+                                        <h2 className="text-2xl md:text-5xl font-jqka uppercase">
                                             {artist.name}
                                         </h2>
-                                        <p className="text-sm font-jakass md:text-lg">
+                                        <p className="text-sm font-jqka md:text-lg">
                                             {artist.date}
                                         </p>
                                     </div>
