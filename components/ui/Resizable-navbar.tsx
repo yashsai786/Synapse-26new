@@ -135,7 +135,7 @@ export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
               className="absolute inset-0 h-full w-full rounded-full bg-[#EB0000]/20 border border-[#EB0000]/40"
             />
           )}
-          <span className="relative z-20">{item.name}</span>
+          <span className="relative z-20 font-joker text-lg tracking-wide">{item.name}</span>
         </Link>
       ))}
     </motion.div>
@@ -184,6 +184,7 @@ export const MobileAnimatedMenuItem = ({
         grid grid-cols-[1fr_auto] items-center
         cursor-pointer select-none
         text-white
+        font-joker
       "
     >
       {/* TEXT */}
@@ -198,6 +199,7 @@ export const MobileAnimatedMenuItem = ({
             text-[clamp(18px,4.5vw,42px)]
             leading-[clamp(32px,7vw,64px)]
             group-hover:text-[#EB0000]
+            font-joker
           "
         >
           {name}
@@ -213,6 +215,7 @@ export const MobileAnimatedMenuItem = ({
             text-[clamp(18px,4.5vw,42px)]
             leading-[clamp(32px,7vw,64px)]
             group-hover:text-[#EB0000]
+            font-joker
           "
         >
           {name}

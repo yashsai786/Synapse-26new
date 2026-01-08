@@ -12,12 +12,12 @@ import {
 
 
 const navItems = [
-    { name: "Home", link: "/" },
-    { name: "About Us", link: "/about" },
-    { name: "Events", link: "/events" },
-    { name: "Contact Us", link: "#contact", isContact: true },
-    { name: "Timeline", link: "/timeline" },
-    { name: "Terms And Conditions", link: "/terms-and-conditions" },
+    { name: "home", link: "/" },
+    { name: "about us", link: "/about" },
+    { name: "events", link: "/events" },
+    { name: "contact us", link: "#contact", isContact: true },
+    { name: "timeline", link: "/timeline" },
+    { name: "terms and conditions", link: "/terms-and-conditions" },
 ];
 
 export default function NavigationPanel() {
