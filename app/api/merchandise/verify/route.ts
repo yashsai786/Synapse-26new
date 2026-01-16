@@ -60,7 +60,7 @@ export async function POST(request: Request) {
             ],
             amount: amount / 100, // Convert from paise to rupees
             order_date: new Date().toISOString(),
-            payment_status: "Paid",
+            payment_status: "done" as const,
             payment_method: "Razorpay",
             razorpay_order_id,
             razorpay_payment_id,
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
 
         const { data: order, error } = await supabase
             .from("merchandise_orders")
-            .insert(orderData)
+            .insert([orderData])
             .select()
             .single();
 
