@@ -39,21 +39,17 @@ import {
   Building2,
   Award,
   Globe,
-  GripVertical,
   Loader2,
-  Trophy,
-  Medal,
-  Crown,
+  AlertCircle,
 } from "lucide-react";
 
 type Sponsor = {
   sponsor_id: number;
   name: string;
-  tier: string | null;
-  website_url: string | null;
-  logo_url: string | null;
-  description: string | null;
-  display_order?: number | null;
+  tier: string;
+  website_url: string;
+  logo_url: string;
+  description?: string;
 };
 
 const tierConfig: Record<string, { bg: string; text: string; border: string; Icon: React.ComponentType<{ className?: string }> }> = {
@@ -63,103 +59,31 @@ const tierConfig: Record<string, { bg: string; text: string; border: string; Ico
   Bronze: { bg: "bg-orange-500/10", text: "text-orange-400", border: "border-orange-500/30", Icon: Award },
 };
 
-// Sortable Item Component
-function SortableSponsorItem({ sponsor, onDeleteClick, getTierStyle }: {
-  sponsor: Sponsor;
-  onDeleteClick: (id: number) => void;
-  getTierStyle: (tier: string | null) => { bg: string; text: string; border: string; Icon: React.ComponentType<{ className?: string }> };
-}) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: sponsor.sponsor_id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isDragging ? 0.5 : 1,
-  };
-
-  const tier = sponsor.tier || "Other";
-  const tierStyle = getTierStyle(sponsor.tier);
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      className={`group p-4 rounded-xl border border-border/40 bg-card hover:border-primary/30 transition-all ${
-        isDragging ? "shadow-lg" : ""
-      }`}
-    >
-      <div className="flex items-center gap-4">
-        {/* Drag Handle */}
-        <div
-          {...attributes}
-          {...listeners}
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground transition-colors p-2 hover:bg-secondary/50 rounded-lg"
-        >
-          <GripVertical className="h-5 w-5" />
-        </div>
-
-        {/* Sponsor Info */}
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="h-12 w-12 rounded-xl bg-secondary flex items-center justify-center shrink-0">
-            <tierStyle.Icon className="h-6 w-6 text-muted-foreground" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold truncate">{sponsor.name}</h3>
-            <Badge className={`${tierStyle.bg} ${tierStyle.text} ${tierStyle.border} text-xs mt-1`}>
-              <Award className="mr-1 h-3 w-3" />
-              {tier}
-            </Badge>
-          </div>
-        </div>
-
-        {/* Website Link */}
-        {sponsor.website_url && (
-          <a
-            href={sponsor.website_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-2 text-sm text-primary hover:underline shrink-0"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Globe className="h-4 w-4" />
-            <ExternalLink className="h-3 w-3" />
-          </a>
-        )}
-
-        {/* Actions */}
-        <div className="flex gap-2 shrink-0">
-          <Link href={`/admin/sponsors/${sponsor.sponsor_id}`}>
-            <Button variant="outline" size="sm" className="border-border/50">
-              <Edit className="h-4 w-4" />
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onDeleteClick(sponsor.sponsor_id)}
-            className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function SponsorsPage() {
   const [sponsors, setSponsors] = useState<Sponsor[]>([]);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const fetchSponsors = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/admin/sponsors");
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setSponsors(data.sponsors || []);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSponsors();
+  }, []);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -244,30 +168,26 @@ export default function SponsorsPage() {
   };
 
   const handleDeleteConfirm = async () => {
-    if (deletingId !== null) {
-      try {
-        const response = await fetch(`/api/admin/sponsors/${deletingId}`, {
-          method: "DELETE",
-        });
-
-        if (response.ok) {
-          setSponsors(sponsors.filter((s) => s.sponsor_id !== deletingId));
-        } else {
-          console.error("Failed to delete sponsor");
-        }
-      } catch (error) {
-        console.error("Error deleting sponsor:", error);
-      }
+    if (deletingId === null) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/admin/sponsors/${deletingId}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      await fetchSponsors();
+    } catch (err: any) {
+      alert("Failed to delete: " + err.message);
+    } finally {
+      setDeleting(false);
+      setDeleteDialogOpen(false);
+      setDeletingId(null);
     }
-    setDeleteDialogOpen(false);
-    setDeletingId(null);
   };
 
   const getTierStyle = (tier: string | null) => {
     return tierConfig[tier || ""] || { bg: "bg-muted", text: "text-muted-foreground", border: "border-border", Icon: Building2 };
   };
 
-  // Group sponsors by tier for stats
   const groupedSponsors = sponsors.reduce((acc, sponsor) => {
     const tier = sponsor.tier || "Other";
     if (!acc[tier]) acc[tier] = [];
@@ -279,11 +199,18 @@ export default function SponsorsPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6 pb-8">
-        <AdminPageHeader title="Sponsors" subtitle="Partnerships" />
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        </div>
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 gap-4">
+        <AlertCircle className="h-12 w-12 text-red-500" />
+        <p className="text-lg text-muted-foreground">Error: {error}</p>
+        <Button onClick={fetchSponsors} variant="outline">Retry</Button>
       </div>
     );
   }
@@ -293,11 +220,7 @@ export default function SponsorsPage() {
       <AdminPageHeader
         title="Sponsors"
         subtitle="Partnerships"
-        badge={
-          <Badge className="bg-primary/10 text-primary border-0">
-            {sponsors.length} partners
-          </Badge>
-        }
+        badge={<Badge className="bg-primary/10 text-primary border-0">{sponsors.length} partners</Badge>}
         actions={
           <div className="flex items-center gap-3">
             {saving && (
@@ -326,10 +249,8 @@ export default function SponsorsPage() {
             <Card key={tier} className="border-border/40">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between mb-2">
-                  <IconComponent className="h-6 w-6 text-muted-foreground" />
-                  <Badge className={`${style.bg} ${style.text} ${style.border}`}>
-                    {tier}
-                  </Badge>
+                  <span className="text-2xl">{style.icon}</span>
+                  <Badge className={`${style.bg} ${style.text} ${style.border}`}>{tier}</Badge>
                 </div>
                 <p className="text-2xl font-bold">{count}</p>
                 <p className="text-sm text-muted-foreground">{tier} Sponsors</p>
@@ -362,27 +283,62 @@ export default function SponsorsPage() {
               <p className="text-sm">Add your first sponsor to get started!</p>
             </div>
           ) : (
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={sponsors.map((s) => s.sponsor_id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <div className="space-y-3">
-                  {sponsors.map((sponsor) => (
-                    <SortableSponsorItem
-                      key={sponsor.sponsor_id}
-                      sponsor={sponsor}
-                      onDeleteClick={handleDeleteClick}
-                      getTierStyle={getTierStyle}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            </DndContext>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {sponsors.map((sponsor) => {
+                const style = getTierStyle(sponsor.tier);
+                return (
+                  <div
+                    key={sponsor.sponsor_id}
+                    className="group p-5 rounded-xl border border-border/40 bg-card hover:border-primary/30 transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="h-12 w-12 rounded-xl bg-secondary flex items-center justify-center text-xl">
+                          {style.icon}
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">{sponsor.name}</h3>
+                          <Badge className={`${style.bg} ${style.text} ${style.border} text-xs`}>
+                            <Award className="mr-1 h-3 w-3" />
+                            {sponsor.tier}
+                          </Badge>
+                        </div>
+                      </div>
+                    </div>
+
+                    {sponsor.website_url && (
+                      <a
+                        href={sponsor.website_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-primary hover:underline mb-4"
+                      >
+                        <Globe className="h-3 w-3" />
+                        {sponsor.website_url.replace(/^https?:\/\//, '')}
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+
+                    <div className="flex gap-2 pt-3 border-t border-border/40">
+                      <Link href={`/admin/sponsors/${sponsor.sponsor_id}`} className="flex-1">
+                        <Button variant="outline" size="sm" className="w-full border-border/50">
+                          <Edit className="mr-1 h-3 w-3" />
+                          Edit
+                        </Button>
+                      </Link>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleDeleteClick(sponsor.sponsor_id)}
+                        className="border-red-500/30 text-red-400 hover:bg-red-500/10 hover:text-red-300"
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </CardContent>
       </Card>
@@ -400,8 +356,8 @@ export default function SponsorsPage() {
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)} className="border-border/50">
               Cancel
             </Button>
-            <Button variant="destructive" onClick={handleDeleteConfirm}>
-              Delete
+            <Button variant="destructive" onClick={handleDeleteConfirm} disabled={deleting}>
+              {deleting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Deleting...</> : "Delete"}
             </Button>
           </DialogFooter>
         </DialogContent>
