@@ -37,10 +37,7 @@ export default function AdminLoginPage() {
         throw new Error("You do not have admin access");
       }
 
-      // Set admin logged in flag
-      localStorage.setItem("isAdminLoggedIn", "true");
-      localStorage.setItem("adminEmail", email);
-
+      // Redirect to admin panel - session is stored in cookies
       router.push("/admin");
       router.refresh();
     } catch (err) {

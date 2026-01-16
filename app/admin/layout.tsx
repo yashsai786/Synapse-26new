@@ -1,14 +1,21 @@
+"use client";
+
 import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { SidebarProvider, SidebarInset } from "@/app/components/ui/sidebar";
 import { AppSidebar, AdminHeader } from "@/components/admin/ui/AdminSidebar";
 import AdminAuthGuard from "@/components/admin/AdminAuthGuard";
 
-export const metadata = {
-  title: "Admin | Synapse",
-  description: "Admin dashboard for Synapse '26",
-};
-
 export default function AdminLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isLoginPage = pathname === "/admin/login";
+
+  // Login page gets minimal layout without sidebar
+  if (isLoginPage) {
+    return <AdminAuthGuard>{children}</AdminAuthGuard>;
+  }
+
+  // Other admin pages get full layout with sidebar
   return (
     <AdminAuthGuard>
       <SidebarProvider>
