@@ -1,8 +1,7 @@
-import { checkAdminFromRequest } from '@/lib/checkAdmin'
-import { corsHeaders, handleCorsResponse, addCorsHeaders } from '@/lib/cors'
-import { createClient } from '@/utils/supabase/server'
-import { NextResponse } from 'next/server'
-import { uploadImage, editImage, deleteImage } from '@/lib/imageUtil'
+import { checkAdminFromRequest } from "@/lib/checkAdmin";
+import { corsHeaders, handleCorsResponse, addCorsHeaders } from "@/lib/cors";
+import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
 
 // Handle CORS preflight requests
 export async function OPTIONS(request: Request) {
@@ -38,14 +37,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
+  const supabase = (await createClient()) as any;
 
-  const { isAdmin, supabase } = await checkAdminFromRequest(request);
-
-  if (!isAdmin || !supabase) {
-    const response = NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 403 }
-    );
+  if (!(await checkAdmin(supabase))) {
+    const response = NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     return addCorsHeaders(response, origin);
   }
 
@@ -96,15 +91,10 @@ export async function POST(request: Request) {
 //remove category
 export async function DELETE(request: Request) {
   const origin = request.headers.get("origin");
+  const supabase = (await createClient()) as any;
 
-  // Use token-based auth for cross-origin requests
-  const { isAdmin, supabase } = await checkAdminFromRequest(request);
-
-  if (!isAdmin || !supabase) {
-    const response = NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 403 }
-    );
+  if (!(await checkAdmin(supabase))) {
+    const response = NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     return addCorsHeaders(response, origin);
   }
 
@@ -168,15 +158,10 @@ export async function DELETE(request: Request) {
 // update category details
 export async function PUT(request: Request) {
   const origin = request.headers.get("origin");
+  const supabase = (await createClient()) as any;
 
-  // Use token-based auth for cross-origin requests
-  const { isAdmin, supabase } = await checkAdminFromRequest(request);
-
-  if (!isAdmin || !supabase) {
-    const response = NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 403 }
-    );
+  if (!(await checkAdmin(supabase))) {
+    const response = NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     return addCorsHeaders(response, origin);
   }
 

@@ -7,8 +7,7 @@ async function checkAdmin(supabase: any) {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return false;
-  const allowedAdmins = ["synapse@gmail.com"];
-  return !!(user.email && allowedAdmins.includes(user.email));
+  return user.email === process.env.ADMIN_EMAIL;
 }
 
 // GET - Fetch all merchandise products

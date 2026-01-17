@@ -21,12 +21,26 @@
 //   ]
 // }
 
+<<<<<<< HEAD
 
 import { checkAdminFromRequest } from '@/lib/checkAdmin'
 import { corsHeaders, handleCorsResponse, addCorsHeaders } from '@/lib/cors'
 import { createClient } from '@/utils/supabase/server'
 import { NextResponse } from 'next/server'
 import { uploadImage, deleteImage } from '@/lib/imageUtil'
+=======
+import { corsHeaders, handleCorsResponse, addCorsHeaders } from "@/lib/cors";
+import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
+>>>>>>> 97a367d634bbe9cf1bb4b7649b2735d85762f1c4
+
+async function checkAdmin(supabase: any) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return false;
+  return user.email === process.env.ADMIN_EMAIL;
+}
 
 // Handle CORS preflight requests
 export async function OPTIONS(request: Request) {
@@ -65,7 +79,9 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const origin = request.headers.get("origin");
+  const supabase = (await createClient()) as any;
 
+<<<<<<< HEAD
   // Use token-based auth for cross-origin requests
   const { isAdmin, supabase } = await checkAdminFromRequest(request)
 
@@ -74,6 +90,10 @@ export async function POST(request: Request) {
       { error: "Unauthorized" },
       { status: 403 }
     );
+=======
+  if (!(await checkAdmin(supabase))) {
+    const response = NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+>>>>>>> 97a367d634bbe9cf1bb4b7649b2735d85762f1c4
     return addCorsHeaders(response, origin);
   }
 
@@ -168,15 +188,10 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   const origin = request.headers.get("origin");
+  const supabase = (await createClient()) as any;
 
-  // Use token-based auth for cross-origin requests
-  const { isAdmin, supabase } = await checkAdminFromRequest(request);
-
-  if (!isAdmin || !supabase) {
-    const response = NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 403 }
-    );
+  if (!(await checkAdmin(supabase))) {
+    const response = NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     return addCorsHeaders(response, origin);
   }
 
@@ -252,15 +267,10 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   const origin = request.headers.get("origin");
+  const supabase = (await createClient()) as any;
 
-  // Use token-based auth for cross-origin requests
-  const { isAdmin, supabase } = await checkAdminFromRequest(request);
-
-  if (!isAdmin || !supabase) {
-    const response = NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 403 }
-    );
+  if (!(await checkAdmin(supabase))) {
+    const response = NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     return addCorsHeaders(response, origin);
   }
 

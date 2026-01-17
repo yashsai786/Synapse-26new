@@ -10,7 +10,6 @@ import {
 } from "next/font/google";
 import { SmoothScroller } from "@/components/ui/SmoothScroller";
 import Script from "next/script";
-import { VoidCursor } from "@/components/ui/VoidCursor";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -49,7 +48,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "SYNAPSE'26 | DA Ka Tyohaar",
+  title: "SYNAPSE' 26 | DA Ka Tyohaar",
   description:
     "SYNAPSE'26 - The Ultimate Tech-Cultural Festival. Register now for the most anticipated event of the year.",
   keywords: [
@@ -62,8 +61,12 @@ export const metadata: Metadata = {
     "gujarat",
     "DAkaTyohaar",
   ],
+  icons: {
+    icon: "/Synapse Logo.png",
+    apple: "/Synapse Logo.png",
+  },
   openGraph: {
-    title: "SYNAPSE'26",
+    title: "SYNAPSE' 26",
     description: "The Ultimate Techno-Cultural Festival",
     type: "website",
   },
@@ -83,7 +86,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} ${inter.variable} ${roboto.variable} ${poppins.variable} antialiased bg-black`}
       >
-        <VoidCursor />
         <SmoothScroller>{children}</SmoothScroller>
         <Analytics />
       </body>
